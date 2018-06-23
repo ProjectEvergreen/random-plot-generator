@@ -1,0 +1,20 @@
+{
+  "name": "random-plot-generator",
+  "version": "0.1.0",
+  "description": "An example of using SVG and Custom Elements (with lit-htmo) to create data visualizations and other fun things in JavaScript.",
+  "author": "Owen Buckley <owen@thegreenhouse.io>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ProjectEvergreen/random-plot-generator.git"
+  },
+  "scripts": {
+    "serve": "http-server -o"
+  },
+  "dependencies": {
+    "lit-html": "^0.10.2"
+  },
+  "devDependencies": {
+    "http-server": "^0.11.1"
+  }
+}
