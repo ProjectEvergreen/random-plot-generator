@@ -7,15 +7,16 @@ class PlotGenerator extends HTMLElement {
     this.X_MAX = 400;
     this.Y_MAX = 400;
     this.NUM_POINTS = 100;
+    this.INTERVAL_MS = 500;
 
     this.points = this.generatePoints(this.NUM_POINTS);
     this.root = this.attachShadow({ mode: 'closed' });
     render(this.template(), this.root);
 
-    setInterval(() => {
-      this.points = this.generatePoints(this.NUM_POINTS);
-      render(this.template(), this.root);
-    }, 500);
+    // setInterval(() => {
+    //   this.points = this.generatePoints(this.NUM_POINTS);
+    //   render(this.template(), this.root);
+    // }, this.INTERVAL_MS);
   }
 
   generatePoints(size) {
@@ -30,7 +31,7 @@ class PlotGenerator extends HTMLElement {
 
   template() {
     return svg`
-      <svg width="${this.X_MAX}" height="${this.Y_MAX}">
+      <svg width="${this.X_MAX}" height="${this.Y_MAX}" style="border: 1px solid #020202">
         ${repeat(this.points, (point) => point.id, (point) => svg`
           <circle cx="${point.x}" cy="${point.y}" r="2" stroke="red" stroke-width="3" fill="red"></circle>
         `)}
