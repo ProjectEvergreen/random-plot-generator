@@ -1,5 +1,5 @@
 import { html, render, svg } from './node_modules/lit-html/lit-html.js';
-import { repeat } from '../../../node_modules/lit-html/lib/repeat.js';
+import { repeat } from './node_modules/lit-html/lib/repeat.js';
 
 class PlotGenerator extends HTMLElement {
   constructor() {
@@ -8,8 +8,8 @@ class PlotGenerator extends HTMLElement {
     this.Y_MAX = 400;
     this.NUM_POINTS = 100;
     this.INTERVAL_MS = 500;
-
     this.points = this.generatePoints(this.NUM_POINTS);
+    
     this.root = this.attachShadow({ mode: 'closed' });
     render(this.template(), this.root);
 
@@ -32,9 +32,22 @@ class PlotGenerator extends HTMLElement {
   template() {
     return svg`
       <svg width="${this.X_MAX}" height="${this.Y_MAX}" style="border: 1px solid #020202">
-        ${repeat(this.points, (point) => point.id, (point) => svg`
-          <circle cx="${point.x}" cy="${point.y}" r="2" stroke="red" stroke-width="3" fill="red"></circle>
-        `)}
+        ${repeat(this.points, (point) => point.id, (point) => {
+          const color = point.x > point.y ? 'green' : 'blue';
+
+          return svg`
+            <circle 
+              cx="${point.x}" 
+              cy="${point.y}" 
+              r="2" 
+              stroke-width="3" 
+              fill="${color}"
+              stroke="${color}">
+            </circle>
+          `
+        })}
+
+        <line x1="0" x2="${this.X_MAX}" y1="0" y2="${this.Y_MAX}" stroke="black"/>
       </svg>
     `;
   }
