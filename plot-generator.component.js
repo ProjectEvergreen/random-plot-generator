@@ -9,16 +9,36 @@ class PlotGenerator extends HTMLElement {
     this.NUM_POINTS = 100;
     this.INTERVAL_MS = 500;
     this.points = this.generatePoints(this.NUM_POINTS);
+    this.randomInterval
     
     this.root = this.attachShadow({ mode: 'closed' });
     render(this.template(), this.root);
-
-    // setInterval(() => {
-    //   this.points = this.generatePoints(this.NUM_POINTS);
-    //   render(this.template(), this.root);
-    // }, this.INTERVAL_MS);
   }
 
+  static get observedAttributes() {
+    return ['random'];
+  }
+
+  attributeChangedCallback(name, oldVal, newVal) {
+    switch (name) {
+
+      case 'random':
+        if(newVal === 'true'){
+          this.randomizePoints();
+        }
+        break;
+      default:
+
+    }
+  }
+
+  randomizePoints() {
+    setInterval(() => {
+      this.points = this.generatePoints(this.NUM_POINTS);
+      render(this.template(), this.root);
+    }, this.INTERVAL_MS);
+  }
+  
   generatePoints(size) {
     return [...Array(size).keys()].map((index) => {
       return {
