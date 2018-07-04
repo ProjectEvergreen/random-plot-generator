@@ -13,25 +13,18 @@ class PlotGenerator extends HTMLElement {
     this.NUM_POINTS = 100;
     this.INTERVAL_MS = 500;
     this.points = this.generatePoints(this.NUM_POINTS);
-
-    const point = {x: 200, y: 400}; 
-    const sample1 = {x: 721, y: 432 };
-    const sample2 = {x: 211, y: 122 };
-    const sample3 = {x: 328, y: 833 };
-    const sample4 = {x: 900, y: 400 };
+    
     this.randomWeights = {
       x: random(-1, 1),
       y: random(-1, 1)
     }
 
-    this.trainedWeights = this.train(this.randomWeights, sample1, this.team(sample1));
-    this.trainedWeights = this.train(this.trainedWeights, sample2, this.team(sample2));
-    this.trainedWeights = this.train(this.trainedWeights, sample3, this.team(sample3));
-    this.trainedWeights = this.train(this.trainedWeights, sample4, this.team(sample4));
+    this.trainedWeights = this.randomWeights;
+    this.generatePoints(this.NUM_POINTS * 1000).forEach(point => {
+      this.trainedWeights = this.train(this.trainedWeights, {x: point.x, y: point.y}, point.team);
+    });
 
     console.log('randomWeights', this.randomWeights);
-    console.log('control', this.team(point));
-    console.log('train', this.train(this.randomWeights, point, this.team(point))); 
     console.log('trainedWeights', this.trainedWeights);
 
     this.root = this.attachShadow({ mode: 'closed' });
@@ -58,10 +51,11 @@ class PlotGenerator extends HTMLElement {
   train(weights, point, control) {
     const guessResult = this.guessPlotPosition(weights, point);
     const error = control - guessResult;
+    const learningRate = 0.1;
 
     return {
-      x: weights.x + (point.x * error),
-      y: weights.y + (point.y * error)
+      x: weights.x + point.x * error * learningRate,
+      y: weights.y + point.y * error * learningRate
     };
   }
 
@@ -75,13 +69,12 @@ class PlotGenerator extends HTMLElement {
   }
 
   getTeamColorForPointPosition(point) {
-    // const plotPosition = this.guessPlotPosition(this.randomWeights, point);
     const plotPosition = this.guessPlotPosition(this.trainedWeights, point);
 
     return plotPosition === 1 ? 'green' : 'blue';
   }
 
-  team(point) {
+  getTeam(point) {
     return point.x > point.y ? 1 : -1;
   }
 
@@ -94,10 +87,14 @@ class PlotGenerator extends HTMLElement {
   
   generatePoints(size) {
     return [...Array(size).keys()].map((index) => {
+      const x = Math.floor(Math.random() * Math.floor(this.X_MAX));
+      const y = Math.floor(Math.random() * Math.floor(this.Y_MAX));
+      
       return {
         id: index,
-        x: Math.floor(Math.random() * Math.floor(this.X_MAX)),
-        y: Math.floor(Math.random() * Math.floor(this.Y_MAX))
+        team: this.getTeam({x, y}),
+        x,
+        y
       };
     })
   }
