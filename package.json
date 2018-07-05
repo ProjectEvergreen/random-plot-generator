@@ -9,12 +9,15 @@
     "url": "git+https://github.com/ProjectEvergreen/random-plot-generator.git"
   },
   "scripts": {
-    "serve": "http-server -o"
+    "lint": "eslint ./src/**/**/*.js",
+    "build": "npm run lint",
+    "serve": "http-server ./src -o"
   },
   "dependencies": {
     "lit-html": "^0.10.2"
   },
   "devDependencies": {
+    "eslint": "^5.0.1",
     "http-server": "^0.11.1"
   }
 }
