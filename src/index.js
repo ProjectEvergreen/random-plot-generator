@@ -7,6 +7,7 @@ class App extends HTMLElement {
   constructor() {
     super();
     this.points = 100;
+    this.multiplier = 200;
     this.regenerate = false;
 
     this.root = this.attachShadow({ mode: 'open' });
@@ -19,6 +20,15 @@ class App extends HTMLElement {
     const userInput = inputElement.value;
 
     this.points = parseInt(userInput, 10);
+
+    render(this.template(), this.root);
+  }
+
+  setMultiplier() {
+    const inputElement = this.root.getElementById('multiplier');
+    const userInput = inputElement.value;
+
+    this.multiplier = parseInt(userInput, 10);
 
     render(this.template(), this.root);
   }
@@ -46,11 +56,18 @@ class App extends HTMLElement {
         <input id="num-points" type="range" value="100" max="400" onchange=${ () => this.setPoints() } />
 
         <br/>
+        <br/>
+
+        <label for="multiplier">Training Set Multiplier: ${this.points} * ${this.multiplier}</label>
+        <input id="multiplier" type="range" value="200" max="1000" onchange=${ () => this.setMultiplier() } />
+
+        <br/>
+        <br/>
 
         <label for="regenerate">Regenerate: ${this.regenerate}</label>
         <input id="regenerate" type="checkbox" onchange=${ () => this.toggleRegnerate() } />
 
-        <plot-generator regenerate$=${this.regenerate} points$=${this.points}></plot-generator>
+        <plot-generator regenerate$=${this.regenerate} points$=${this.points} multiplier$=${this.multiplier}></plot-generator>
 
       </div>
     `;
