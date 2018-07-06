@@ -1,4 +1,10 @@
 # random-plot-generator
+[![GitHub release](https://img.shields.io/github/tag/ProjectEvergreen/random-plot-generator.svg)](https://github.com/ProjectEvergreen/random-plot-generator/tags)
+![CircleCI branch](https://img.shields.io/circleci/project/github/RedSparr0w/node-csgo-parser/master.svg?style=plastic)
+[![GitHub issues](https://img.shields.io/github/issues-raw/ProjectEvergreen/random-plot-generator.svg)](https://github.com/ProjectEvergreen/random-plot-generator/issues)
+[![GitHub issues](https://img.shields.io/github/issues-pr-raw/ProjectEvergreen/random-plot-generator.svg)](https://github.com/ProjectEvergreen/random-plot-generator/issues)
+[![GitHub license](https://img.shields.io/badge/license-Apache%202-blue.svg)](https://raw.githubusercontent.com/ProjectEvergreen/random-plot-generator/master/LICENSE.md)
+
 An example of using SVG and Custom Elements (with `lit-html`) to create data visualizations and other fun things in JavaScript.  Inspired by [this FunFunFunction YouTube series](https://www.youtube.com/playlist?list=PL0zVEGEvSaeGmPpG8tAaqSmf3k56LPwiF) on creating a Neural Network in JavaScript.  For the time being I will just be emulating what's done in the video, but where it goes from there, who knows!
 
 ## Setup
