@@ -11,13 +11,13 @@
   "scripts": {
     "lint": "eslint ./src/**/**/*.js",
     "build": "npm run lint",
-    "serve": "http-server ./src -o"
+    "serve": "live-server ./src --open"
   },
   "dependencies": {
     "lit-html": "^0.10.2"
   },
   "devDependencies": {
     "eslint": "^5.0.1",
-    "http-server": "^0.11.1"
+    "live-server": "^1.2.0"
   }
 }

@@ -7,27 +7,38 @@ class PlotGenerator extends HTMLElement {
     super();
     this.X_MAX = 400;
     this.Y_MAX = 400;
-    this.NUM_POINTS = 100;
     this.INTERVAL_MS = 500;
-    this.points = this.generatePoints(this.NUM_POINTS);
-    const dataset = this.generatePoints(this.NUM_POINTS * 1000);
+    this._interval;
+    this._numPoints = 100;
+    this._points = this.generatePoints(this._numPoints);
+    const dataset = this.generatePoints(this._numPoints * 1000);
 
     this.weightTrainer = new PlotDataTrainer(dataset);
-
     this.root = this.attachShadow({ mode: 'closed' });
+    
     render(this.template(), this.root);
   }
 
   static get observedAttributes() {
-    return ['random'];
+    return ['regenerate', 'points'];
   }
 
   attributeChangedCallback(name, oldVal, newVal) {
     switch (name) {
 
-      case 'random':
+      case 'regenerate':
         if (newVal === 'true') {
-          this.randomizePoints();
+          this.regeneratePoints();
+        } else {
+          clearInterval(this._interval);
+        }
+        break;
+      case 'points':
+        if (newVal && newVal !== this.NUM_POINTS && isNaN(newVal) === false) {
+          this._numPoints = parseInt(newVal, 10);
+          this._points = this.generatePoints(this._numPoints);
+
+          render(this.template(), this.root);
         }
         break;
       default:
@@ -55,9 +66,9 @@ class PlotGenerator extends HTMLElement {
     });
   }
 
-  randomizePoints() {
-    setInterval(() => {
-      this.points = this.generatePoints(this.NUM_POINTS);
+  regeneratePoints() {
+    this._interval = setInterval(() => {
+      this._points = this.generatePoints(this._numPoints);
       render(this.template(), this.root);
     }, this.INTERVAL_MS);
   }
@@ -65,7 +76,7 @@ class PlotGenerator extends HTMLElement {
   template() {
     return svg`
       <svg width="${this.X_MAX}" height="${this.Y_MAX}" style="border: 1px solid #020202">
-        ${repeat(this.points, (point) => point.id, (point) => {
+        ${repeat(this._points, (point) => point.id, (point) => {
           const color = this.getTeamColorForPoint(point);
 
           return svg`<circle 
