@@ -11,16 +11,17 @@ class PlotGenerator extends HTMLElement {
     this._interval;
     this._numPoints = 100;
     this._points = this.generatePoints(this._numPoints);
-    const dataset = this.generatePoints(this._numPoints * 1000);
+    this._multiplier = this._numPoints * 1000;
+    const dataset = this.generatePoints(this._multiplier);
 
-    this.weightTrainer = new PlotDataTrainer(dataset);
+    this.dataTrainer = new PlotDataTrainer(dataset);
     this.root = this.attachShadow({ mode: 'closed' });
     
     render(this.template(), this.root);
   }
 
   static get observedAttributes() {
-    return ['regenerate', 'points'];
+    return ['regenerate', 'points', 'multiplier'];
   }
 
   attributeChangedCallback(name, oldVal, newVal) {
@@ -34,10 +35,19 @@ class PlotGenerator extends HTMLElement {
         }
         break;
       case 'points':
-        if (newVal && newVal !== this.NUM_POINTS && isNaN(newVal) === false) {
+        if (newVal && newVal !== this.NUM_POINTS && !isNaN(newVal)) {
           this._numPoints = parseInt(newVal, 10);
           this._points = this.generatePoints(this._numPoints);
 
+          render(this.template(), this.root);
+        }
+        break;
+      case 'multiplier':
+        if (newVal && newVal !== this._multiplier && isNaN(newVal) === false) {
+          this.multiplier = parseInt(newVal, 10);
+          const dataset = this.generatePoints(this.multiplier);
+
+          this.dataTrainer = new PlotDataTrainer(dataset);
           render(this.template(), this.root);
         }
         break;
@@ -47,7 +57,7 @@ class PlotGenerator extends HTMLElement {
   }
 
   getTeamColorForPoint(point) {
-    return this.weightTrainer.guessPlotPosition(point) === 1 ? 'green' : 'blue';
+    return this.dataTrainer.guessPlotPosition(point) === 1 ? 'green' : 'blue';
   }
 
   // 1 (above / right position)
