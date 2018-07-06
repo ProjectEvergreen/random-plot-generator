@@ -8,3 +8,13 @@ An example of using SVG and Custom Elements (with `lit-html`) to create data vis
 
 ## Contributing
 The more the merrier!  Would love to keep this going with more varied and interesting features and visualizations.  Propose something in the issue tracker and feel free to submit a PR!
+
+## Release Management / GitHub Pages
+GitHub pages has been setup for this repo.  The URL `https://projectevergreen.github.io/random-plot-generator/`.  
+
+To generate a new release and generate an updated version of the code for GitHub pages, do the following:
+1. Make sure all changes to be released have gone into the `master` branch
+1. Run `npm run gh-pages`
+1. Commit this changes
+1. Bump `package.json` and `git tag` the release
+1. Push to `master` with `--tags` and and verify the deployment
